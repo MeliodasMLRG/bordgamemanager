@@ -52,7 +52,7 @@
 
         .buttons {
             display: grid;
-            grid-template-columns: repeat(2, 1fr);
+            grid-template-columns: 1fr 1fr;
             gap: 0.5rem;
             margin-top: 1rem;
         }
@@ -203,7 +203,7 @@
             }
 
             .buttons {
-                grid-template-columns: repeat(2, 1fr);
+                grid-template-columns: 1fr 1fr;
                 gap: 0.25rem;
             }
 
@@ -281,14 +281,14 @@
                             <img src="../images/Golden_Penny.png" alt="Money Icon">
                         </div>
                         <div class="buttons">
-                            <button class="negative" onclick="changeMoney(${i}, -10)">-10 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
-                            <button class="negative" onclick="changeMoney(${i}, -7)">-7 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
-                            <button class="negative" onclick="changeMoney(${i}, -5)">-5 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
-                            <button class="negative" onclick="changeMoney(${i}, -1)">-1 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
-                            <button class="positive" onclick="changeMoney(${i}, 1)">+1 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
-                            <button class="positive" onclick="changeMoney(${i}, 5)">+5 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
-                            <button class="positive" onclick="changeMoney(${i}, 7)">+7 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
                             <button class="positive" onclick="changeMoney(${i}, 10)">+10 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
+                            <button class="negative" onclick="changeMoney(${i}, -10)">-10 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
+                            <button class="positive" onclick="changeMoney(${i}, 7)">+7 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
+                            <button class="negative" onclick="changeMoney(${i}, -7)">-7 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
+                            <button class="positive" onclick="changeMoney(${i}, 5)">+5 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
+                            <button class="negative" onclick="changeMoney(${i}, -5)">-5 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
+                            <button class="positive" onclick="changeMoney(${i}, 1)">+1 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
+                            <button class="negative" onclick="changeMoney(${i}, -1)">-1 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
                         </div>
                     </div>
                     <div class="counter-container" id="counter-container-${i}">
