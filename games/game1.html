@@ -17,12 +17,17 @@
             margin: 0;
             flex-direction: column;
             font-size: 1rem; /* Base font size */
+            overflow: hidden; /* Prevent body scroll */
         }
 
         .game-container {
             text-align: center;
             width: 90%;
             max-width: 800px;
+            overflow-y: auto; /* Enable vertical scrolling */
+            height: 100%; /* Full height */
+            padding: 1rem;
+            box-sizing: border-box;
         }
 
         .player {
@@ -103,6 +108,8 @@
             display: flex;
             flex-direction: column;
             align-items: center;
+            overflow-y: auto; /* Enable vertical scrolling */
+            max-height: calc(100vh - 10rem); /* Adjust height to fit within the viewport */
         }
 
         .counter-item {
