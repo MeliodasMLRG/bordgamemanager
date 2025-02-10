@@ -16,6 +16,7 @@
             height: 100vh;
             margin: 0;
             flex-direction: column;
+            font-size: 1rem; /* Base font size */
         }
 
         .game-container {
@@ -180,6 +181,10 @@
         }
 
         @media (max-width: 600px) {
+            body {
+                font-size: 0.875rem; /* Scale down font size */
+            }
+
             .money {
                 font-size: 1rem;
             }
