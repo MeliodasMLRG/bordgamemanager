@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Binding of Isaac Four Souls</title>
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        body {
+            background-color: #121212;
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+
+        .game-container {
+            text-align: center;
+            width: 90%;
+            max-width: 800px;
+        }
+
+        .player {
+            margin: 20px 0;
+            display: none;
+        }
+
+        .money-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            text-align: right;
+        }
+
+        .money {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            font-size: 24px;
+        }
+
+        .money img {
+            margin-left: 10px;
+            width: 24px;
+            height: 24px;
+        }
+
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            margin-top: 10px;
+        }
+
+        button {
+            margin: 5px;
+            padding: 5px 10px;
+            background-color: #333;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        button:hover {
+            background-color: #555;
+            transform: scale(1.05);
+        }
+
+        .counter-container {
+            margin-top: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .counter-item {
+            margin: 5px 0;
+            padding: 5px;
+            border: 1px solid #fff;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 90%; /* Default width for other counters */
+            max-width: 600px;
+        }
+
+        .counter-item.soul-counter {
+            width: 90%; /* Specific width for soul counter */
+            max-width: 300px;
+        }
+
+        .counter-item input {
+            margin-right: 10px;
+            padding: 5px;
+            border: 1px solid #fff;
+            border-radius: 5px;
+            background-color: #333;
+            color: #fff;
+            outline: none;
+        }
+
+        .counter-item input::placeholder {
+            color: #aaa;
+        }
+
+        .counter-item span {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            border: 1px solid #fff;
+            border-radius: 5px;
+            margin: 0 5px;
+        }
+
+        .counter-item .soulspan {
+            display: inline-block;
+            width: auto;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            border: 1px solid #fff;
+            border-radius: 5px;
+            margin: 0 5px;
+            padding: 0 5px;
+        }
+
+        .back-button, .reset-button {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #444;
+        }
+
+        .reset-button {
+            top: 50px;
+        }
+
+        .current-player-display {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <button class="back-button" onclick="goBack()">Back</button>
+        <button class="reset-button" onclick="resetPage()">Reset Page</button>
+        <div id="setup-container">
+            <label for="num-players">Number of Players:</label>
+            <input type="number" id="num-players" min="1" max="10" value="1">
+            <button onclick="startGame()">Start Game</button>
+        </div>
+        <div id="players-container"></div>
+    </div>
+    <h2 id="current-player-display" class="current-player-display"></h2>
+    <script src="../js/game1.js"></script>
+    <script>
+        let currentPlayer = 1;
+        let totalPlayers = 0;
+
+        function startGame() {
+            totalPlayers = document.getElementById('num-players').value;
+            const playersContainer = document.getElementById('players-container');
+            const setupContainer = document.getElementById('setup-container');
+            setupContainer.style.display = 'none';
+            playersContainer.innerHTML = '';
+
+            for (let i = 1; i <= totalPlayers; i++) {
+                const playerDiv = document.createElement('div');
+                playerDiv.className = 'player';
+                playerDiv.id = `player-${i}`;
+                playerDiv.innerHTML = `
+                    <input type="text" id="rename-input-${i}" placeholder="Rename Player">
+                    <button onclick="renamePlayer(${i})">Rename</button>
+                    <div class="money-container">
+                        <div class="money">
+                            <span id="money-${i}">0</span>
+                            <img src="../images/Golden_Penny.png" alt="Money Icon">
+                        </div>
+                        <div class="buttons">
+                            <button onclick="changeMoney(${i}, -10)">-10 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
+                            <button onclick="changeMoney(${i}, -7)">-7 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
+                            <button onclick="changeMoney(${i}, -5)">-5 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
+                            <button onclick="changeMoney(${i}, -1)">-1 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
+                            <button onclick="changeMoney(${i}, 1)">+1 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
+                            <button onclick="changeMoney(${i}, 5)">+5 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
+                            <button onclick="changeMoney(${i}, 7)">+7 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
+                            <button onclick="changeMoney(${i}, 10)">+10 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
+                        </div>
+                    </div>
+                    <div class="counter-container" id="counter-container-${i}">
+                        <div class="counter-item soul-counter">
+                            <span class="soulspan">Souls <img src="../images/soul.png" alt="Soul Icon" style="width: 20px; height: 20px;"></span>
+                            <button onclick="changeCounter('souls-${i}', -1)">-1</button>
+                            <span id="souls-${i}-value" style="color: blue;">0</span>
+                            <button onclick="changeCounter('souls-${i}', 1)">+1</button>
+                        </div>
+                        <button onclick="addCounter(${i})">Add Counter</button>
+                    </div>
+                    <button onclick="finishTurn(${i})">Finish Turn</button>
+                `;
+                playersContainer.appendChild(playerDiv);
+            }
+
+            document.getElementById(`player-${currentPlayer}`).style.display = 'block';
+            updateCurrentPlayerDisplay();
+        }
+
+        function changeMoney(player, amount) {
+            const moneySpan = document.getElementById(`money-${player}`);
+            let currentMoney = parseInt(moneySpan.textContent);
+            if (currentMoney + amount < 0) {
+                return;
+            }
+            currentMoney += amount;
+            moneySpan.textContent = currentMoney;
+        }
+
+        function addCounter(player) {
+            const counterContainer = document.getElementById(`counter-container-${player}`);
+            const counterId = `counter-${player}-${counterContainer.children.length}`;
+            const counterDiv = document.createElement('div');
+            counterDiv.className = 'counter-item';
+            counterDiv.id = counterId;
+            counterDiv.innerHTML = `
+                <input type="text" placeholder="Counter Name">
+                <button onclick="changeCounter('${counterId}', -1)">-1</button>
+                <span id="${counterId}-value">0</span>
+                <button onclick="changeCounter('${counterId}', 1)">+1</button>
+                <button onclick="resetCounter('${counterId}')">Reset</button>
+                <button onclick="removeCounter('${counterId}')">Remove</button>
+                <input type="color" id="color-picker-${counterId}" onchange="changeCounterColor('${counterId}')">
+            `;
+            counterContainer.appendChild(counterDiv);
+        }
+
+        function changeCounter(counterId, amount) {
+            const counterSpan = document.getElementById(`${counterId}-value`);
+            let currentCounter = parseInt(counterSpan.textContent);
+            currentCounter += amount;
+            counterSpan.textContent = currentCounter;
+        }
+
+        function changeCounterColor(counterId) {
+            const colorPicker = document.getElementById(`color-picker-${counterId}`);
+            const counterSpan = document.getElementById(`${counterId}-value`);
+            counterSpan.style.color = colorPicker.value;
+        }
+
+        function resetCounter(counterId) {
+            const counterSpan = document.getElementById(`${counterId}-value`);
+            counterSpan.textContent = 0;
+        }
+
+        function removeCounter(counterId) {
+            const counterDiv = document.getElementById(counterId);
+            counterDiv.remove();
+        }
+
+        function finishTurn(player) {
+            document.getElementById(`player-${player}`).style.display = 'none';
+            currentPlayer++;
+            if (currentPlayer > totalPlayers) {
+                currentPlayer = 1;
+            }
+            document.getElementById(`player-${currentPlayer}`).style.display = 'block';
+            updateCurrentPlayerDisplay();
+        }
+
+        function resetGame() {
+            const setupContainer = document.getElementById('setup-container');
+            const playersContainer = document.getElementById('players-container');
+            setupContainer.style.display = 'block';
+            playersContainer.innerHTML = '';
+            currentPlayer = 1;
+            totalPlayers = 0;
+            document.getElementById('current-player-display').innerHTML = '';
+        }
+
+        function resetPage() {
+            location.reload();
+        }
+
+        function renamePlayer(player) {
+            const renameInput = document.getElementById(`rename-input-${player}`);
+            const newName = renameInput.value;
+            const playerNameSpan = document.createElement('span');
+            playerNameSpan.id = `player-name-${player}`;
+            playerNameSpan.textContent = newName;
+            renameInput.nextElementSibling.remove(); // Remove the Rename button
+            renameInput.remove(); // Remove the input field
+            document.getElementById(`player-${player}`).prepend(playerNameSpan);
+            updateCurrentPlayerDisplay();
+        }
+
+        function updateCurrentPlayerDisplay() {
+            const currentPlayerDisplay = document.getElementById('current-player-display');
+            const playerName = document.getElementById(`player-name-${currentPlayer}`);
+            currentPlayerDisplay.innerHTML = playerName ? playerName.textContent : `Player ${currentPlayer}`;
+        }
+
+        function goBack() {
+            window.location.href = "../index.html";
+        }
+    </script>
+</body>
+</html>
