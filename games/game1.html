@@ -51,9 +51,9 @@
         }
 
         .buttons {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 0.5rem;
             margin-top: 1rem;
         }
 
@@ -195,9 +195,8 @@
             }
 
             .buttons {
-                flex-direction: row;
-                flex-wrap: wrap;
-                justify-content: center;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 0.25rem;
             }
 
             .buttons button {
