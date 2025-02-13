@@ -337,6 +337,14 @@
         </div>
     </div>
 
+    <div id="moneyChangeModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeMoneyChangeModal()">&times;</span>
+            <h3>Change Money Balance</h3>
+            <div id="money-change-buttons"></div>
+        </div>
+    </div>
+
     <script src="../js/game1.js"></script>
     <script>
         let currentPlayer = 1;
@@ -373,6 +381,7 @@
                             <button class="positive" onclick="changeMoney(${i}, 1)">+1 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
                             <button class="negative" onclick="changeMoney(${i}, -1)">-1 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
                         </div>
+                        <button onclick="openMoneyChangeWindow(${i})">Change Other Player's Money</button>
                     </div>
                     <div class="counter-container scrollable-counter-container" id="counter-container-${i}">
                         <div class="counter-item soul-counter">
@@ -401,7 +410,7 @@
             }
             currentMoney += amount;
             moneySpan.textContent = currentMoney;
-            logAction(player, `Changed money by ${amount}. New balance: ${currentMoney}`);
+            logAction(player, `New balance: ${currentMoney}`);
         }
 
         function addCounter(player) {
@@ -420,7 +429,7 @@
                 <input type="color" id="color-picker-${counterId}" onchange="changeCounterColor('${counterId}')">
             `;
             counterContainer.appendChild(counterDiv);
-            logAction(player, `Added a new counter with ID: ${counterId}`);
+            logAction(player, `New counter with ID: ${counterId}`);
         }
 
         function changeCounter(counterId, amount) {
@@ -428,26 +437,26 @@
             let currentCounter = parseInt(counterSpan.textContent);
             currentCounter += amount;
             counterSpan.textContent = currentCounter;
-            logAction(currentPlayer, `Changed counter ${counterId} by ${amount}. New value: ${currentCounter}`);
+            logAction(currentPlayer, `${counterId}: ${currentCounter}`);
         }
 
         function changeCounterColor(counterId) {
             const colorPicker = document.getElementById(`color-picker-${counterId}`);
             const counterSpan = document.getElementById(`${counterId}-value`);
             counterSpan.style.color = colorPicker.value;
-            logAction(currentPlayer, `Changed color of counter ${counterId} to ${colorPicker.value}`);
+            logAction(currentPlayer, `Color of ${counterId}: ${colorPicker.value}`);
         }
 
         function resetCounter(counterId) {
             const counterSpan = document.getElementById(`${counterId}-value`);
             counterSpan.textContent = 0;
-            logAction(currentPlayer, `Reset counter ${counterId}`);
+            logAction(currentPlayer, `Reset: ${counterId}`);
         }
 
         function removeCounter(counterId) {
             const counterDiv = document.getElementById(counterId);
             counterDiv.remove();
-            logAction(currentPlayer, `Removed counter ${counterId}`);
+            logAction(currentPlayer, `Removed: ${counterId}`);
         }
 
         function finishTurn(player) {
@@ -486,7 +495,7 @@
             renameInput.remove(); // Remove the input field
             document.getElementById(`player-${player}`).prepend(playerNameSpan);
             updateCurrentPlayerDisplay();
-            logAction(player, `Renamed player to ${newName}`);
+            logAction(player, `Renamed to ${newName}`);
         }
 
         function updateCurrentPlayerDisplay() {
@@ -520,6 +529,46 @@
             if (event.target == logModal) {
                 logModal.style.display = 'none';
             }
+        }
+
+        function openMoneyChangeWindow(player) {
+            const moneyChangeButtons = document.getElementById('money-change-buttons');
+            moneyChangeButtons.innerHTML = '';
+
+            for (let i = 1; i <= totalPlayers; i++) {
+                if (i !== player) {
+                    const playerName = document.getElementById(`player-name-${i}`) ? document.getElementById(`player-name-${i}`).textContent : `Player ${i}`;
+                    const currentMoney = document.getElementById(`money-${i}`).textContent;
+                    const playerDiv = document.createElement('div');
+                    playerDiv.innerHTML = `
+                        <h4>${playerName} (Money: <span id="current-money-${i}">${currentMoney}</span>)</h4>
+                        <button onclick="changeOtherPlayerMoney(${player}, ${i}, 1)">+1 <img src="../images/Golden_Penny.png" alt="Money Icon" style="width: 1rem; height: 1rem;"></button>
+                        <button onclick="changeOtherPlayerMoney(${player}, ${i}, -1)">-1 <img src="../images/Golden_Penny.png" alt="Money Icon" style="width: 1rem; height: 1rem;"></button>
+                    `;
+                    moneyChangeButtons.appendChild(playerDiv);
+                }
+            }
+
+            const moneyChangeModal = document.getElementById('moneyChangeModal');
+            moneyChangeModal.style.display = 'flex';
+        }
+
+        function closeMoneyChangeModal() {
+            const moneyChangeModal = document.getElementById('moneyChangeModal');
+            moneyChangeModal.style.display = 'none';
+        }
+
+        function changeOtherPlayerMoney(currentPlayer, targetPlayer, amount) {
+            const moneySpan = document.getElementById(`money-${targetPlayer}`);
+            let currentMoney = parseInt(moneySpan.textContent);
+            if (currentMoney + amount < 0) {
+                return;
+            }
+            currentMoney += amount;
+            moneySpan.textContent = currentMoney;
+            document.getElementById(`current-money-${targetPlayer}`).textContent = currentMoney;
+            logAction(currentPlayer, `Changed ${document.getElementById(`player-name-${targetPlayer}`).textContent || `Player ${targetPlayer}`}'s money by ${amount}. New balance: ${currentMoney}`);
+            logAction(targetPlayer, `Money changed by ${document.getElementById(`player-name-${currentPlayer}`).textContent || `Player ${currentPlayer}`} by ${amount}. New balance: ${currentMoney}`);
         }
     </script>
 </body>
