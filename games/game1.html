@@ -291,6 +291,7 @@
     <script>
         let currentPlayer = 1;
         let totalPlayers = 0;
+        let playerLogs = [];
 
         function startGame() {
             totalPlayers = document.getElementById('num-players').value;
@@ -298,6 +299,7 @@
             const setupContainer = document.getElementById('setup-container');
             setupContainer.style.display = 'none';
             playersContainer.innerHTML = '';
+            playerLogs = Array.from({ length: totalPlayers }, () => []);
 
             for (let i = 1; i <= totalPlayers; i++) {
                 const playerDiv = document.createElement('div');
@@ -332,6 +334,7 @@
                         <button onclick="addCounter(${i})">Add Counter</button>
                     </div>
                     <button onclick="finishTurn(${i})">Finish Turn</button>
+                    <button onclick="showLog(${i})">Show Log</button>
                 `;
                 playersContainer.appendChild(playerDiv);
             }
@@ -348,6 +351,7 @@
             }
             currentMoney += amount;
             moneySpan.textContent = currentMoney;
+            logAction(player, `Changed money by ${amount}. New balance: ${currentMoney}`);
         }
 
         function addCounter(player) {
@@ -366,6 +370,7 @@
                 <input type="color" id="color-picker-${counterId}" onchange="changeCounterColor('${counterId}')">
             `;
             counterContainer.appendChild(counterDiv);
+            logAction(player, `Added a new counter with ID: ${counterId}`);
         }
 
         function changeCounter(counterId, amount) {
@@ -373,22 +378,26 @@
             let currentCounter = parseInt(counterSpan.textContent);
             currentCounter += amount;
             counterSpan.textContent = currentCounter;
+            logAction(currentPlayer, `Changed counter ${counterId} by ${amount}. New value: ${currentCounter}`);
         }
 
         function changeCounterColor(counterId) {
             const colorPicker = document.getElementById(`color-picker-${counterId}`);
             const counterSpan = document.getElementById(`${counterId}-value`);
             counterSpan.style.color = colorPicker.value;
+            logAction(currentPlayer, `Changed color of counter ${counterId} to ${colorPicker.value}`);
         }
 
         function resetCounter(counterId) {
             const counterSpan = document.getElementById(`${counterId}-value`);
             counterSpan.textContent = 0;
+            logAction(currentPlayer, `Reset counter ${counterId}`);
         }
 
         function removeCounter(counterId) {
             const counterDiv = document.getElementById(counterId);
             counterDiv.remove();
+            logAction(currentPlayer, `Removed counter ${counterId}`);
         }
 
         function finishTurn(player) {
@@ -399,6 +408,7 @@
             }
             document.getElementById(`player-${currentPlayer}`).style.display = 'block';
             updateCurrentPlayerDisplay();
+            logAction(player, `Finished turn`);
         }
 
         function resetGame() {
@@ -409,6 +419,7 @@
             currentPlayer = 1;
             totalPlayers = 0;
             document.getElementById('current-player-display').innerHTML = '';
+            playerLogs = [];
         }
 
         function resetPage() {
@@ -425,6 +436,7 @@
             renameInput.remove(); // Remove the input field
             document.getElementById(`player-${player}`).prepend(playerNameSpan);
             updateCurrentPlayerDisplay();
+            logAction(player, `Renamed player to ${newName}`);
         }
 
         function updateCurrentPlayerDisplay() {
@@ -435,6 +447,14 @@
 
         function goBack() {
             window.location.href = "../index.html";
+        }
+
+        function logAction(player, action) {
+            playerLogs[player - 1].push(action);
+        }
+
+        function showLog(player) {
+            alert(`Log for Player ${player}:\n` + playerLogs[player - 1].join('\n'));
         }
     </script>
 </body>
