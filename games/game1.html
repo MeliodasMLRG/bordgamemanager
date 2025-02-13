@@ -23,6 +23,10 @@
             text-align: center;
             width: 90%;
             max-width: 800px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
         }
 
         .player {
@@ -35,25 +39,25 @@
             flex-direction: column;
             align-items: flex-end;
             margin-bottom: 1rem;
-            align-self: flex-end; /* Verschiebt das gesamte Layout nach rechts */
+            align-self: flex-end; /* Aligns the container to the right */
         }
 
         .buttons {
             display: flex;
             justify-content: flex-start;
-            width: auto; /* Passt die Breite an den Inhalt an */
-            gap: 0.5rem; /* Abstand zwischen den Stacks */
+            width: auto; /* Adjusts the width to the content */
+            gap: 0.5rem; /* Space between the stacks */
         }
 
         .positive-buttons, .negative-buttons {
             display: flex;
             flex-direction: column;
-            gap: 0.5rem; /* Abstand zwischen den Buttons in einem Stack */
+            gap: 0.5rem; /* Space between the buttons in a stack */
         }
 
         .player-details {
-            margin-top: 1rem; /* Abstand zwischen dem "Change Other Player's Money" Button und den anderen Elementen */
-            align-self: flex-end; /* Verschiebt das gesamte Layout nach rechts */
+            margin-top: 1rem; /* Space between the "Change Other Player's Money" button and other elements */
+            align-self: flex-end; /* Aligns the entire layout to the right */
         }
 
         button {
@@ -97,7 +101,7 @@
         }
 
         .scrollable-counter-container {
-            max-height: 200px; /* Adjust the height as needed */
+            max-height: 180px; /* Adjust the height as needed */
             overflow-y: auto;
             width: 100%;
             scrollbar-width: none; /* For Firefox */
@@ -115,7 +119,7 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 100%;
+            width: 90%;
             max-width: 300px;
         }
 
@@ -306,6 +310,16 @@
 </head>
 <body>
     <div class="game-container">
+        <div class="money-container">
+            <div class="buttons">
+                <div class="positive-buttons">
+                    <!-- Positive buttons here -->
+                </div>
+                <div class="negative-buttons">
+                    <!-- Negative buttons here -->
+                </div>
+            </div>
+        </div>
         <button class="back-button" onclick="goBack()">Back</button>
         <button class="reset-button" onclick="resetPage()">Reset Page</button>
         <div id="setup-container">
