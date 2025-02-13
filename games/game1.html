@@ -31,47 +31,33 @@
         }
 
         .money-container {
-            position: absolute;
-            top: 1rem;
-            right: 1rem;
-            text-align: right;
             display: flex;
             flex-direction: column;
             align-items: flex-end;
             margin-bottom: 1rem;
-        }
-
-        .money {
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            font-size: 1.5rem;
-        }
-
-        .money img {
-            margin-left: 0.5rem;
-            width: 1.5rem;
-            height: 1.5rem;
+            align-self: flex-end; /* Verschiebt das gesamte Layout nach rechts */
         }
 
         .buttons {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: flex-end;
-            gap: 0.5rem;
-            margin-top: 1rem;
+            justify-content: flex-start;
+            width: auto; /* Passt die Breite an den Inhalt an */
+            gap: 0.5rem; /* Abstand zwischen den Stacks */
         }
 
-        .buttons .positive {
-            grid-column: 1;
+        .positive-buttons, .negative-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem; /* Abstand zwischen den Buttons in einem Stack */
         }
 
-        .buttons .negative {
-            grid-column: 2;
+        .player-details {
+            margin-top: 1rem; /* Abstand zwischen dem "Change Other Player's Money" Button und den anderen Elementen */
+            align-self: flex-end; /* Verschiebt das gesamte Layout nach rechts */
         }
 
         button {
-            margin: 0.5rem;
+            margin: 0.5rem 0;
             padding: 0.5rem 1rem;
             background-color: #333;
             color: #fff;
@@ -111,7 +97,7 @@
         }
 
         .scrollable-counter-container {
-            max-height: 300px; /* Adjust the height as needed */
+            max-height: 200px; /* Adjust the height as needed */
             overflow-y: auto;
             width: 100%;
             scrollbar-width: none; /* For Firefox */
@@ -369,38 +355,44 @@
                 playerDiv.className = 'player';
                 playerDiv.id = `player-${i}`;
                 playerDiv.innerHTML = `
-                    <input type="text" id="rename-input-${i}" placeholder="Rename Player">
-                    <button onclick="renamePlayer(${i})">Rename</button>
                     <div class="money-container">
                         <div class="money">
                             <span id="money-${i}">0</span>
                             <img src="../images/Golden_Penny.png" alt="Money Icon">
                         </div>
                         <div class="buttons">
-                            <button class="positive" onclick="changeMoney(${i}, 10)">+10 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
-                            <button class="negative" onclick="changeMoney(${i}, -10)">-10 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
-                            <button class="positive" onclick="changeMoney(${i}, 7)">+7 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
-                            <button class="negative" onclick="changeMoney(${i}, -7)">-7 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
-                            <button class="positive" onclick="changeMoney(${i}, 5)">+5 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
-                            <button class="negative" onclick="changeMoney(${i}, -5)">-5 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
-                            <button class="positive" onclick="changeMoney(${i}, 1)">+1 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
-                            <button class="negative" onclick="changeMoney(${i}, -1)">-1 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
+                            <div class="positive-buttons">
+                                <button class="positive" onclick="changeMoney(${i}, 10)">+10 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
+                                <button class="positive" onclick="changeMoney(${i}, 7)">+7 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
+                                <button class="positive" onclick="changeMoney(${i}, 5)">+5 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
+                                <button class="positive" onclick="changeMoney(${i}, 1)">+1 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
+                            </div>
+                            <div class="negative-buttons">
+                                <button class="negative" onclick="changeMoney(${i}, -10)">-10 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
+                                <button class="negative" onclick="changeMoney(${i}, -7)">-7 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
+                                <button class="negative" onclick="changeMoney(${i}, -5)">-5 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
+                                <button class="negative" onclick="changeMoney(${i}, -1)">-1 <img src="../images/Golden_Penny.png" alt="Money Icon"></button>
+                            </div>
                         </div>
                         <button onclick="openMoneyChangeWindow(${i})">Change Other Player's Money</button>
                     </div>
-                    <div class="counter-container scrollable-counter-container" id="counter-container-${i}">
-                        <div class="counter-item soul-counter">
-                            <span class="soulspan">Souls <img src="../images/soul.png" alt="Soul Icon" style="width: 20px; height: 20px;"></span>
-                            <div class="buttons">
-                                <button onclick="changeCounter('souls-${i}', -1)">-1</button>
-                                <span id="souls-${i}-value" style="color: blue;">0</span>
-                                <button onclick="changeCounter('souls-${i}', 1)">+1</button>
+                    <div class="player-details">
+                        <input type="text" id="rename-input-${i}" placeholder="Rename Player">
+                        <button onclick="renamePlayer(${i})">Rename</button>
+                        <div class="counter-container scrollable-counter-container" id="counter-container-${i}">
+                            <div class="counter-item soul-counter">
+                                <span class="soulspan">Souls <img src="../images/soul.png" alt="Soul Icon" style="width: 20px; height: 20px;"></span>
+                                <div class="buttons">
+                                    <button onclick="changeCounter('souls-${i}', -1)">-1</button>
+                                    <span id="souls-${i}-value" style="color: blue;">0</span>
+                                    <button onclick="changeCounter('souls-${i}', 1)">+1</button>
+                                </div>
                             </div>
+                            <button onclick="addCounter(${i})">Add Counter</button>
                         </div>
-                        <button onclick="addCounter(${i})">Add Counter</button>
+                        <button onclick="finishTurn(${i})">Finish Turn</button>
+                        <button onclick="showLog(${i})">Show Log</button>
                     </div>
-                    <button onclick="finishTurn(${i})">Finish Turn</button>
-                    <button onclick="showLog(${i})">Show Log</button>
                 `;
                 playersContainer.appendChild(playerDiv);
             }
@@ -440,6 +432,7 @@
                 </div>
             `;
             counterContainer.appendChild(counterDiv);
+            counterDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); // Smooth scroll to the new counter
             logAction(player, `New counter with ID: ${counterId}`);
         }
 
