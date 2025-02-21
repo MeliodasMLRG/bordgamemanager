@@ -1,4 +1,4 @@
-# My Website
+# Boardgame Manager
 
 This project is a simple website that displays various games in a visually appealing manner. Each game is represented by an HTML file and has an associated image. The website features a dark color scheme and centers the game boxes for a clean layout.
 
